@@ -137,7 +137,12 @@ function Process.process_data(data, locales, verbose)
 	end
 	local item_subgroups = data["item-subgroup"]
 	for name, d in pairs(item_subgroups) do
-		item_groups[d["group"]]["subgroups"][name] = d["order"]
+		local group = item_groups[d["group"]]
+		if group == nil then
+			group = { order = {}, subgroups = {} }
+			item_groups[d["group"]] = group
+		end
+		group["subgroups"][name] = d["order"]
 	end
 	local items = {}
 	local fuel = {}
